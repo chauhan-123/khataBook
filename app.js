@@ -1,0 +1,32 @@
+require('dotenv').config();
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+// All routes goes through this page
+const adminRoutes = require('./src/routers/adminRoutes');
+
+// create express app
+const app = express();
+
+// Database connection;
+mongoose.connect(process.env.dbConnection, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+});
+
+
+// Middlewares
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
+
+// All Routes define
+app.use('/admin_panel', adminRoutes);
+
+// listen for requests
+app.listen(3000, () => {
+    console.log("Server is listening on port 3000");
+});
