@@ -16,14 +16,20 @@ var adminPanelSchema = new mongoose.Schema({
         required: [true, 'email field is required'],
         trim: true,
         unique: true,
-        minlength: 20,
-        maxlength: 100
+        minlength: 10,
+        maxlength: 100 
     },
     mobileNumber: {
         type: Number,
         required: [true, 'mobile number field is required'],
         unique: true,
         maxlength: 10
+    },
+    password:{
+        type:String,
+        required: [true, 'password field is required'],
+        minlength:6,
+        maxlength:100
     }
 })
 

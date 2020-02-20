@@ -1,0 +1,91 @@
+
+<div class="page-content">
+    <div class="form-v8-content">
+        <div class="form-left">
+            <img src="assets/images/download.jpeg" style="height: 552px;" alt="form">
+        </div>
+        <div class="form-right">
+            <div class="tab">
+                <div class="tab-inner">
+                    <button class="tablinks" (click)="signin()" >Sign In</button>
+                </div>
+                <div class="tab-inner"   >
+                    <button class="tablinks" (click)="signup()" >Sign Up</button>
+                </div>
+            </div>
+            <!-- Registration form -->
+
+            <form class="form-detail" *ngIf="!register">
+                <div class="tabcontent" id="sign-up">
+                    <div class="form-row">
+                        <label class="form-row-inner">
+                            <input type="text" name="full_name" id="full_name" class="input-text" required>
+                            <span class="label">Username</span>
+                            <span class="border"></span>
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label class="form-row-inner">
+                            <input type="text" name="full_name" id="full_name" class="input-text" required>
+                            <span class="label">Business Type</span>
+                            <span class="border"></span>
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label class="form-row-inner">
+                            <input type="text" name="your_email" id="your_email" class="input-text" required>
+                            <span class="label">E-Mail</span>
+                            <span class="border"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-row-inner">
+                            <input type="text" name="your_email" id="your_email" class="input-text" required>
+                            <span class="label">Mobile</span>
+                            <span class="border"></span>
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label class="form-row-inner">
+                            <input type="password" name="password" id="password" class="input-text" required>
+                            <span class="label">Password</span>
+                            <span class="border"></span>
+                        </label>
+                    </div>
+        
+                    
+                    <div class="form-row-last">
+                        <input type="submit" name="register" class="register" value="Register">
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Sign up form -->
+            <form class="form-detail" action="#" method="post" *ngIf="register">
+                <div class="tabcontent" id="sign-in">
+          
+                    <div class="form-row">
+                        <label class="form-row-inner">
+                            <input type="text" name="your_email_1" id="your_email_1" class="input-text" required>
+                            <span class="label">E-Mail</span>
+                            <span class="border"></span>
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label class="form-row-inner">
+                            <input type="password" name="password_1" id="password_1" class="input-text" required>
+                            <span class="label">Password</span>
+                            <span class="border"></span>
+                        </label>
+                    </div>
+ 
+                    <div class="form-row-last">
+                        <input type="submit" name="register" class="register" value="Sign In">
+                    </div>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
