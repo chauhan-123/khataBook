@@ -1,91 +1,124 @@
-
 <div class="page-content">
-    <div class="form-v8-content">
-        <div class="form-left">
-            <img src="assets/images/download.jpeg" style="height: 552px;" alt="form">
-        </div>
-        <div class="form-right">
-            <div class="tab">
-                <div class="tab-inner">
-                    <button class="tablinks" (click)="signin()" >Sign In</button>
-                </div>
-                <div class="tab-inner"   >
-                    <button class="tablinks" (click)="signup()" >Sign Up</button>
-                </div>
-            </div>
-            <!-- Registration form -->
-
-            <form class="form-detail" *ngIf="!register">
-                <div class="tabcontent" id="sign-up">
-                    <div class="form-row">
-                        <label class="form-row-inner">
-                            <input type="text" name="full_name" id="full_name" class="input-text" required>
-                            <span class="label">Username</span>
-                            <span class="border"></span>
-                        </label>
-                    </div>
-                    <div class="form-row">
-                        <label class="form-row-inner">
-                            <input type="text" name="full_name" id="full_name" class="input-text" required>
-                            <span class="label">Business Type</span>
-                            <span class="border"></span>
-                        </label>
-                    </div>
-                    <div class="form-row">
-                        <label class="form-row-inner">
-                            <input type="text" name="your_email" id="your_email" class="input-text" required>
-                            <span class="label">E-Mail</span>
-                            <span class="border"></span>
-                        </label>
-                    </div>
-
-                    <div class="form-row">
-                        <label class="form-row-inner">
-                            <input type="text" name="your_email" id="your_email" class="input-text" required>
-                            <span class="label">Mobile</span>
-                            <span class="border"></span>
-                        </label>
-                    </div>
-                    <div class="form-row">
-                        <label class="form-row-inner">
-                            <input type="password" name="password" id="password" class="input-text" required>
-                            <span class="label">Password</span>
-                            <span class="border"></span>
-                        </label>
-                    </div>
-        
-                    
-                    <div class="form-row-last">
-                        <input type="submit" name="register" class="register" value="Register">
-                    </div>
-                </div>
-            </form>
-            
-            <!-- Sign up form -->
-            <form class="form-detail" action="#" method="post" *ngIf="register">
-                <div class="tabcontent" id="sign-in">
-          
-                    <div class="form-row">
-                        <label class="form-row-inner">
-                            <input type="text" name="your_email_1" id="your_email_1" class="input-text" required>
-                            <span class="label">E-Mail</span>
-                            <span class="border"></span>
-                        </label>
-                    </div>
-                    <div class="form-row">
-                        <label class="form-row-inner">
-                            <input type="password" name="password_1" id="password_1" class="input-text" required>
-                            <span class="label">Password</span>
-                            <span class="border"></span>
-                        </label>
-                    </div>
- 
-                    <div class="form-row-last">
-                        <input type="submit" name="register" class="register" value="Sign In">
-                    </div>
-                </div>
-            </form>
-            
-        </div>
+  <div class="form-v8-content">
+    <div class="form-left">
+      <img src="assets/images/download.jpeg" style="height:610px;" alt="form">
     </div>
+    <div class="form-right">
+      <div class="tab">
+        <div class="tab-inner">
+          <button class="tablinks" (click)="signin()">Sign In</button>
+        </div>
+        <div class="tab-inner">
+          <button class="tablinks" (click)="signup()">Sign Up</button>
+        </div>
+      </div>
+
+      <!-- Registration form -->
+
+      <form autocomplete="off" class="form-detail" [formGroup]="signUpForm" *ngIf="!register" (ngSubmit)="onSubmit()">
+        <div class="tabcontent" id="sign-up">
+          <div class="form-row">
+            <label class="form-row-inner">
+              <input type="text" [ngStyle]="{'margin-bottom.px': submitted && f.adminName.errors ? 0: 31}"
+                formControlName="adminName" name="adminName" class="input-text"
+                [ngClass]="{ 'is-invalid': submitted && f.adminName.errors }" required>
+              <span class="label">Username</span>
+              <span class="border"></span>
+            </label>
+            <span *ngIf="submitted && f.adminName.errors" class="invalid-feedback">
+              <span *ngIf="f.adminName.errors.required">Full Name is required</span>
+            </span>
+
+          </div>
+
+
+          <div class="form-row">
+            <label class="form-row-inner">
+              <input type="text" [ngStyle]="{'margin-bottom.px': submitted && f.adminBusinessType.errors ? 0: 31}"
+                formControlName="adminBusinessType" name="adminBusinessType" class="input-text"
+                [ngClass]="{ 'is-invalid': submitted && f.adminBusinessType.errors }" required>
+              <span class="label">Business Type</span>
+              <span class="border"></span>
+            </label>
+            <span *ngIf="submitted && f.adminBusinessType.errors" class="invalid-feedback">
+              <span *ngIf="f.adminBusinessType.errors.required">Business Name is required</span>
+            </span>
+          </div>
+
+          <div class="form-row">
+            <label class="form-row-inner">
+              <input type="text" [ngStyle]="{'margin-bottom.px': submitted && f.email.errors ? 0: 31}"
+                formControlName="email" name="email" class="input-text"
+                [ngClass]="{ 'is-invalid': submitted && f.email.errors }" required>
+              <span class="label">E-Mail</span>
+              <span class="border"></span>
+            </label>
+            <span *ngIf="submitted && f.email.errors" class="invalid-feedback span">
+              <span *ngIf="f.email.errors.required">Email is required , </span>
+            </span>
+            <mat-error *ngIf="submitted && f.email.errors" class="invalid-feedback">Email is not correct format
+            </mat-error>
+          </div>
+
+          <div class="form-row">
+            <label class="form-row-inner">
+              <input type="text" [ngStyle]="{'margin-bottom.px': submitted && f.mobileNumber.errors ? 0: 31}"
+                formControlName="mobileNumber" name="mobileNumber" class="input-text"
+                [ngClass]="{ 'is-invalid': submitted && f.mobileNumber.errors }" required>
+              <span class="label">Mobile</span>
+              <span class="border"></span>
+            </label>
+            <span *ngIf="submitted && f.mobileNumber.errors" class="invalid-feedback">
+              <span *ngIf="f.mobileNumber.errors.required"> number is required , </span>
+            </span>
+            <mat-error *ngIf="submitted && f.mobileNumber.errors" class="invalid-feedback">number is not correct
+              format
+            </mat-error>
+          </div>
+
+          <div class="form-row">
+            <label class="form-row-inner">
+              <input type="password" [ngStyle]="{'margin-bottom.px': submitted && f.password.errors ? 0: 31}"
+                formControlName="password" name="password" class="input-text"
+                [ngClass]="{ 'is-invalid': submitted && f.password.errors }" required>
+              <span class="label">Password</span>
+              <span class="border"></span>
+            </label>
+            <span *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <span *ngIf="f.password.errors.required">password is required</span>
+            </span>
+          </div>
+          <div class="form-row-last">
+            <button type="submit" class="register" style="height: 45px;">Register </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Sign up form -->
+      <form class="form-detail" action="#" method="post" *ngIf="register">
+        <div class="tabcontent" id="sign-in">
+
+          <div class="form-row">
+            <label class="form-row-inner">
+              <input type="text" name="your_email_1" id="your_email_1" class="input-text" required>
+              <span class="label">E-Mail</span>
+              <span class="border"></span>
+            </label>
+          </div>
+          <div class="form-row">
+            <label class="form-row-inner">
+              <input type="password" name="password_1" id="password_1" class="input-text" required>
+              <span class="label">Password</span>
+              <span class="border"></span>
+            </label>
+          </div>
+
+          <div class="form-row-last">
+            <input type="submit" name="register" class="register" value="Sign In">
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
 </div>

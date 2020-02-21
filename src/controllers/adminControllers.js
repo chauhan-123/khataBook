@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../model/config');
 const admin = {
     getAdminRegistrationData: (req, res) => {
+        console.log(req.body)
         let {
             body
         } = req;
