@@ -124,10 +124,7 @@ const admin = {
                 error: error
             })
         }
-
     }
-
-
 }
 
 module.exports = admin;
