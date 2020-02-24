@@ -18,17 +18,32 @@ export class RegistrationService {
     this.self = _utilityService;
   }
 
+  // This function is used for send the data from admin to backend In Signup page
   register(info) {
     return this.http.post(`${this.url}admin_panel/register`, info)
       .pipe(
-        retry(2),
         catchError(this.handleError)
       );
   }
 
-  // UtilityService.loader.next(true)
-
+  // this function handle the HttpResponse Errors from admin panel of signup page
   handleError = (error: HttpErrorResponse) => {
+    let message = error['error'].message;
+    this._utilityService.openSnackBar(message, true);
+    UtilityService.loader.next(false);
+    return throwError(error);
+  }
+
+  // This function is used for send the data from admin to backend In login page
+  signIn(info) {
+    return this.http.post(`${this.url}admin_panel/login`, info)
+      .pipe(
+        catchError(this.HandleError)
+      );
+  }
+
+  // this function handle the HttpResponse Errors from admin panel of signup page
+  HandleError = (error: HttpErrorResponse) => {
     let message = error['error'].message;
     this._utilityService.openSnackBar(message, true);
     UtilityService.loader.next(false);

@@ -10,6 +10,7 @@ import { UtilityService } from '../../service/utility.service';
 export class RegistrationComponent implements OnInit {
   register = true;
   signUpForm: FormGroup;
+  signInForm: FormGroup;
   submitted = false;
 
   constructor(private fb: FormBuilder, public registrationService: RegistrationService,
@@ -23,11 +24,20 @@ export class RegistrationComponent implements OnInit {
       mobileNumber: ['', [Validators.required, Validators.maxLength(10), Validators.pattern('^[0-9]*$')]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
     });
+
+    this.signInForm = this.fb.group({
+      email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+    })
   }
 
   // convenience getter for easy access to form fields
   get f() { return this.signUpForm.controls; }
 
+  // convenience getter for easy access to form fields
+  get f1() { return this.signInForm.controls; }
+
+  // signup functionlity of signup page
   onSubmit() {
     this.submitted = true;
 
@@ -36,13 +46,29 @@ export class RegistrationComponent implements OnInit {
       return;
     }
     this.registrationService.register(this.signUpForm.value).subscribe((response: any) => {
-      this.utility.openSnackBar('you are successfully signup', true)
+      this.utility.openSnackBar('you are successfully signup', true);
+      UtilityService.loader.next(false);
     })
+  }
 
+  // login functionlity of login page
+  Submit() {
+    this.submitted = true;
+    console.log(this.signInForm.value)
+
+    // stop here if form is invalid
+    if (this.signInForm.invalid) {
+      return;
+    }
+    this.registrationService.signIn(this.signInForm.value).subscribe((response: any) => {
+      console.log(response, "res")
+      this.utility.openSnackBar('you are successfully signin', true);
+      UtilityService.loader.next(false);
+    })
   }
 
 
-
+  // tag swittching between signup and signin
   signup() {
     this.register = false;
   }

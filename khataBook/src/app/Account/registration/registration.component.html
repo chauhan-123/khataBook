@@ -17,6 +17,7 @@
 
       <form autocomplete="off" class="form-detail" [formGroup]="signUpForm" *ngIf="!register" (ngSubmit)="onSubmit()">
         <div class="tabcontent" id="sign-up">
+          <!-- admin name field -->
           <div class="form-row">
             <label class="form-row-inner">
               <input type="text" [ngStyle]="{'margin-bottom.px': submitted && f.adminName.errors ? 0: 31}"
@@ -28,10 +29,9 @@
             <span *ngIf="submitted && f.adminName.errors" class="invalid-feedback">
               <span *ngIf="f.adminName.errors.required">Full Name is required</span>
             </span>
-
           </div>
 
-
+          <!-- business field name -->
           <div class="form-row">
             <label class="form-row-inner">
               <input type="text" [ngStyle]="{'margin-bottom.px': submitted && f.adminBusinessType.errors ? 0: 31}"
@@ -45,6 +45,7 @@
             </span>
           </div>
 
+          <!-- email name field -->
           <div class="form-row">
             <label class="form-row-inner">
               <input type="text" [ngStyle]="{'margin-bottom.px': submitted && f.email.errors ? 0: 31}"
@@ -60,6 +61,7 @@
             </mat-error>
           </div>
 
+          <!-- mobile number field -->
           <div class="form-row">
             <label class="form-row-inner">
               <input type="text" [ngStyle]="{'margin-bottom.px': submitted && f.mobileNumber.errors ? 0: 31}"
@@ -76,6 +78,7 @@
             </mat-error>
           </div>
 
+          <!-- password field -->
           <div class="form-row">
             <label class="form-row-inner">
               <input type="password" [ngStyle]="{'margin-bottom.px': submitted && f.password.errors ? 0: 31}"
@@ -88,33 +91,52 @@
               <span *ngIf="f.password.errors.required">password is required</span>
             </span>
           </div>
+          <!-- submit button on signup form -->
           <div class="form-row-last">
             <button type="submit" class="register" style="height: 45px;">Register </button>
           </div>
         </div>
       </form>
 
-      <!-- Sign up form -->
-      <form class="form-detail" action="#" method="post" *ngIf="register">
+
+      <!-- Sign In form -->
+      <form class="form-detail" [formGroup]="signInForm" (ngSubmit)="Submit()" *ngIf="register">
         <div class="tabcontent" id="sign-in">
 
+          <!-- email name field -->
           <div class="form-row">
             <label class="form-row-inner">
-              <input type="text" name="your_email_1" id="your_email_1" class="input-text" required>
+              <input type="text" [ngStyle]="{'margin-bottom.px': submitted && f1.email.errors ? 0: 31}"
+                formControlName="email" name="email" class="input-text"
+                [ngClass]="{ 'is-invalid': submitted && f1.email.errors }" required>
               <span class="label">E-Mail</span>
               <span class="border"></span>
             </label>
+            <span *ngIf="submitted && f1.email.errors" class="invalid-feedback span">
+              <span *ngIf="f1.email.errors.required">Email is required , </span>
+            </span>
+            <mat-error *ngIf="submitted && f1.email.errors" class="invalid-feedback">Email is not correct format
+            </mat-error>
           </div>
+
+          <!-- password name field -->
           <div class="form-row">
             <label class="form-row-inner">
-              <input type="password" name="password_1" id="password_1" class="input-text" required>
+              <input type="password" [ngStyle]="{'margin-bottom.px': submitted && f1.password.errors ? 0: 31}"
+                formControlName="password" name="password" class="input-text"
+                [ngClass]="{ 'is-invalid': submitted && f1.password.errors }" required>
               <span class="label">Password</span>
               <span class="border"></span>
             </label>
+            <span *ngIf="submitted && f1.password.errors" class="invalid-feedback">
+              <span *ngIf="f1.password.errors.required">password is required</span>
+            </span>
           </div>
 
+          <!-- submit button on login form -->
           <div class="form-row-last">
-            <input type="submit" name="register" class="register" value="Sign In">
+            <button type="submit" class="register" style="height: 45px;">Login </button>
+
           </div>
         </div>
       </form>

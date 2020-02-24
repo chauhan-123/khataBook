@@ -81,53 +81,42 @@ const admin = {
             body
         } = req;
         try {
-            adminGroup.find({
-                $or: [{
-                        'email': req.body.email
-                    },
-                    {
-                        'password': req.body.password
-                    },
-                ]
+            adminGroup.findOne({
+                email: body.email
             }).then((user, error) => {
                 if (error) {
-                    return res.status(401).json({
-                        statusCode: 401,
-                        message: 'not a registered user'
+                    return res.status(500).json({
+                        message: error.message
                     })
                 }
-                if (!user[0]) {
-                    let message = '';
-                    if (user.email != body.email) {
-                        message = 'email is not valid'
-                    }
-                    if (user.password != body.password) {
-                        message = 'first signup '
-                    }
-                    return res.status(401).json({
-                        statusCode: 401,
-                        message
+                if (!user) {
+                    res.status(500).json({
+                        statusCode: 500,
+                        message: 'not a authenticated user',
                     });
                 }
-                var passwordIsValid = bcrypt.compareSync(body.password, user[0].password);
-                if (!passwordIsValid) {
-                    return res.status(402).json({
-                        statusCode: 402,
-                        message: ' your password is not match with registered password ....'
+                if (user) {
+                    var passwordIsValid = bcrypt.compareSync(body.password, user.password);
+                    if (!passwordIsValid) {
+                        return res.status(402).json({
+                            statusCode: 402,
+                            message: ' your password is not match with registered password ....'
+                        });
+                    }
+                    var token = jwt.sign({
+                        id: user._id,
+                        email: user.email,
+                        adminName: user.adminName
+                    }, config.secret, {
+                        expiresIn: 86400 // expires in 24 hours
+                    });
+                    res.status(200).json({
+                        statusCode: 200,
+                        message: 'successfully logged in',
+                        result: token
                     });
                 }
-                var token = jwt.sign({
-                    id: user._id,
-                    email: user.email,
-                    adminName: user.adminName
-                }, config.secret, {
-                    expiresIn: 86400 // expires in 24 hours
-                });
-                res.status(200).json({
-                    statusCode: 200,
-                    message: 'successfully logged in',
-                    result: token
-                });
+
             })
         } catch (error) {
             res.status(500).json({
