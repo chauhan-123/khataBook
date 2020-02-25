@@ -17,7 +17,7 @@ var adminPanelSchema = new mongoose.Schema({
         trim: true,
         unique: true,
         minlength: 10,
-        maxlength: 100 
+        maxlength: 100
     },
     mobileNumber: {
         type: Number,
@@ -25,12 +25,16 @@ var adminPanelSchema = new mongoose.Schema({
         unique: true,
         maxlength: 10
     },
-    password:{
-        type:String,
+    password: {
+        type: String,
         required: [true, 'password field is required'],
-        minlength:6,
-        maxlength:100
-    }
+        minlength: 6,
+        maxlength: 100
+    },
+    time: {
+        type: Date,
+        default: Date.now
+    },
 })
 
 var adminPanel = mongoose.model("adminPanel", adminPanelSchema)

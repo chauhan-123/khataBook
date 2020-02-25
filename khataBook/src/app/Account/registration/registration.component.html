@@ -139,43 +139,12 @@
           </div>
           <!-- forgot password button -->
           <div class="form-row-last">
-            <button type="submit" class="register" style="height: 45px; float:right;" *ngIf="!showForgotPage"
-              (click)="forgotPage()">Forgot
+            <button type="submit" class="register" style="height: 45px; float:right;"
+              [routerLink]="['../forgot_password']">Forgot
               Password ? </button>
           </div>
 
         </div>
       </form>
-
-      <!-- Forgot password html -->
-      <div *ngIf="showForgotPage">
-        <form class="form-detail" [formGroup]="forgotPasswordForm" *ngIf="register">
-          <div class="tabcontent" id="sign-in">
-
-            <!-- email name field -->
-            <div class="form-row">
-              <label class="form-row-inner">
-                <input type="text" [ngStyle]="{'margin-bottom.px': submitted && f2.email.errors ? 0: 31}"
-                  formControlName="email" name="email" class="input-text"
-                  [ngClass]="{ 'is-invalid': submitted && f2.email.errors }" required>
-                <span class="label">E-Mail</span>
-                <span class="border"></span>
-              </label>
-              <span *ngIf="submitted && f2.email.errors" class="invalid-feedback span">
-                <span *ngIf="f2.email.errors.required">Email is required , </span>
-              </span>
-              <mat-error *ngIf="submitted && f2.email.errors" class="invalid-feedback">Email is not correct format
-              </mat-error>
-            </div>
-          </div>
-        </form>
-
-        <!-- submit button on forgot  form -->
-        <div class="form-row-last">
-          <button type="submit" class="register" class="forgot-password"
-            (click)="forgotPassword(forgotPasswordForm.value)">Send </button>
-        </div>
-
-      </div>
     </div>
   </div>

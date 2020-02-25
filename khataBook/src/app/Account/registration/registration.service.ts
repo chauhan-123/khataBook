@@ -26,7 +26,35 @@ export class RegistrationService {
       );
   }
 
-  // this function handle the HttpResponse Errors from admin panel of signup page
+  // This function is used for send the data from admin to backend In login page
+  signIn(info) {
+    return this.http.post(`${this.url}admin_panel/login`, info)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  // This function is used for send the data from admin to backend In forgot password page
+  forgot(info) {
+    console.log("info", info);
+    return this.http.post(`${this.url}admin_panel/forgot_password`, info)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+
+
+  // This function is used for send the data from admin to backend In Reset password page
+  reset(info) {
+    console.log("info", info);
+    return this.http.post(`${this.url}admin_panel/reset_password`, info)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  // this function handle the HttpResponse Errors from admin panel 
   handleError = (error: HttpErrorResponse) => {
     let message = error['error'].message;
     this._utilityService.openSnackBar(message, true);
@@ -34,19 +62,4 @@ export class RegistrationService {
     return throwError(error);
   }
 
-  // This function is used for send the data from admin to backend In login page
-  signIn(info) {
-    return this.http.post(`${this.url}admin_panel/login`, info)
-      .pipe(
-        catchError(this.HandleError)
-      );
-  }
-
-  // this function handle the HttpResponse Errors from admin panel of signup page
-  HandleError = (error: HttpErrorResponse) => {
-    let message = error['error'].message;
-    this._utilityService.openSnackBar(message, true);
-    UtilityService.loader.next(false);
-    return throwError(error);
-  }
 }

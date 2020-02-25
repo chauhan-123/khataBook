@@ -3,6 +3,8 @@ const adminGroup = adminModel.adminPanel;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../model/config');
+var nodemailer = require('nodemailer');
+
 const admin = {
     getAdminRegistrationData: (req, res) => {
         console.log(req.body)
@@ -124,6 +126,142 @@ const admin = {
                 error: error
             })
         }
+    },
+
+    getAdminforgotPasswordData: (req, res) => {
+        try {
+            let {
+                body
+            } = req;
+            adminGroup.find({
+                'email': body.email
+            }).then((user, error) => {
+                if (error) {
+                    return res.status(500).json({
+                        message: error.message
+                    })
+                }
+                if (!user[0]) {
+
+                    return res.status(400).json({
+                        statusCode: 400,
+                        message: 'email id is not registered'
+                    })
+                }
+
+                if (user) {
+                    var token = jwt.sign({
+                        id: user._id,
+                        email: user.email,
+                    }, config.secret, {
+                        expiresIn: 86400 // expires in 24 hours
+                    });
+                    var transporter = nodemailer.createTransport({
+                        service: 'gmail',
+                        auth: {
+                            user: 'chauhan1995sumit@gmail.com',
+                            pass: 'Sumit@12345'
+                        }
+                    });
+                    var mailOptions = {
+                        from: 'chauhan1995sumit@gmail.com',
+                        to: req.body.email,
+                        text: 'resend email',
+                        subject: 'Sending Email using Node.js',
+                        html: `<p>Click <a href="http://localhost:4200/reset_password?token=${token}">sendToken=${token}</a> to reset your password</p>`
+                    };
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            console.log('Email sent: ' + info.response);
+                        }
+                    });
+                    var time = new Date();
+                    adminGroup.findOneAndUpdate({
+                        'email': body.email
+                    }, {
+                        $set: {
+                            'time': time
+                        }
+                    }).then((result) => {
+                        res.status(200).json({
+                            statusCode: 200,
+                            message: 'Reset pasword link send to your email..',
+                            result: user
+                        });
+                    }).catch(error => res.status(500).json({
+                        error: error
+                    }))
+                }
+
+            })
+
+        } catch (error) {
+            res.status(500).json({
+                statusCode: 500,
+                error: error
+            })
+        }
+
+
+    },
+
+    getAdminresetPasswordData: (req, res) => {
+        console.log(req.body)
+        let {
+            body
+        } = req;
+
+        try {
+            adminGroup.find({
+                'email': body.email
+            }, async (error, user) => {
+                var time = new Date();
+                var diffMs = (time - user.time); // millisecond 
+                var diffDays = Math.floor(diffMs / 86400000); // days
+                var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
+                var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+                var diffSec = diffMins / 1000;
+
+                if (diffMins >= 5) { // thats is 5 minute..
+                    res.status(500).json({
+                        statusCode: 500,
+                        message: 'your password time is expired....'
+                    })
+                } else {
+                    var password = body.password;
+                    var confirmPassword = body.confirm_password;
+                    if (password !== confirmPassword) {
+                        res.status(400).json({
+                            statusCode: 400,
+                            message: 'password not match with confirm password'
+                        });
+                    } else {
+                        let password2 = await bcrypt.hash(body.password, 12);
+                        adminGroup.findOneAndUpdate({
+                            email: user.email
+                        }, {
+                            $set: {
+                                password: password2,
+                            }
+                        }).then((result) => {
+                            res.status(200).json({
+                                statusCode: 200,
+                                message: 'you are login with new password with registered email.... '
+                            })
+                        })
+                    }
+                }
+            })
+        } catch (error) {
+            res.status(500).json({
+                statusCode: 500,
+                error: error
+            })
+        }
+
+
     }
 }
 
