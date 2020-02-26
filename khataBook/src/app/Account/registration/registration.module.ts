@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 const registrationRoutes: Routes = [
   { path: '', component: RegistrationComponent }
 ]
@@ -17,7 +18,8 @@ const registrationRoutes: Routes = [
     RouterModule.forChild(registrationRoutes),
     FormsModule,
     ReactiveFormsModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    SharedModule
 
   ]
 })

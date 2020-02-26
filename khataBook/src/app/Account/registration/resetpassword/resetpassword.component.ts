@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { RegistrationService } from '../registration.service';
-import { UtilityService } from '../../../service/utility.service';
+import { UtilityService } from '../../../shared/service/utility.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -43,13 +43,13 @@ export class ResetpasswordComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    console.log(this.resetPasswordForm.value)
     // stop here if form is invalid
     if (this.resetPasswordForm.invalid) {
       return;
     }
     let data = this.resetPasswordForm.value;
     data['email'] = this.decodedJwtData.email;
+    console.log(data)
     this.registrationService.reset(data).subscribe((response: any) => {
       this.utility.openSnackBar('you are login with new password with registered email....', true);
       UtilityService.loader.next(false);

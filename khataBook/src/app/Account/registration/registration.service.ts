@@ -3,8 +3,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { catchError, retry } from 'rxjs/operators'
 import { throwError } from 'rxjs';
-import { UtilityService } from '../../service/utility.service';
-import { HttpService } from '../../service/http.service';
+import { UtilityService } from '../../shared/service/utility.service';
+import { HttpService } from '../../shared/service/http.service';
 
 @Injectable({
   providedIn: 'root'

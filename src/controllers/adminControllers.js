@@ -105,6 +105,7 @@ const admin = {
                             message: ' your password is not match with registered password ....'
                         });
                     }
+                    console.log(user, user[0])
                     var token = jwt.sign({
                         id: user._id,
                         email: user.email,
@@ -115,7 +116,8 @@ const admin = {
                     res.status(200).json({
                         statusCode: 200,
                         message: 'successfully logged in',
-                        result: token
+                        result: user,
+                        token: token
                     });
                 }
 
@@ -151,8 +153,8 @@ const admin = {
 
                 if (user) {
                     var token = jwt.sign({
-                        id: user._id,
-                        email: user.email,
+                        id: user[0]._id,
+                        email: user[0].email,
                     }, config.secret, {
                         expiresIn: 86400 // expires in 24 hours
                     });
@@ -208,7 +210,6 @@ const admin = {
     },
 
     getAdminresetPasswordData: (req, res) => {
-        console.log(req.body)
         let {
             body
         } = req;
@@ -217,41 +218,50 @@ const admin = {
             adminGroup.find({
                 'email': body.email
             }, async (error, user) => {
-                var time = new Date();
-                var diffMs = (time - user.time); // millisecond 
-                var diffDays = Math.floor(diffMs / 86400000); // days
-                var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
-                var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-                var diffSec = diffMins / 1000;
-
-                if (diffMins >= 5) { // thats is 5 minute..
-                    res.status(500).json({
-                        statusCode: 500,
-                        message: 'your password time is expired....'
-                    })
-                } else {
-                    var password = body.password;
-                    var confirmPassword = body.confirm_password;
-                    if (password !== confirmPassword) {
-                        res.status(400).json({
-                            statusCode: 400,
-                            message: 'password not match with confirm password'
-                        });
-                    } else {
-                        let password2 = await bcrypt.hash(body.password, 12);
-                        adminGroup.findOneAndUpdate({
-                            email: user.email
-                        }, {
-                            $set: {
-                                password: password2,
-                            }
-                        }).then((result) => {
-                            res.status(200).json({
-                                statusCode: 200,
-                                message: 'you are login with new password with registered email.... '
-                            })
+                if (user[0].resetPasswordLinkExpired == true) {
+                    var time = new Date();
+                    var diffMs = (time - user[0].time); // millisecond 
+                    var diffDays = Math.floor(diffMs / 86400000); // days
+                    var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
+                    var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+                    var diffSec = diffMins / 1000;
+                    console.log(diffMins)
+                    if (diffMins >= 5) { // thats is 5 minute..
+                        res.status(500).json({
+                            statusCode: 500,
+                            message: 'your password time is expired....'
                         })
+                    } else {
+                        var password = body.password;
+                        var confirmPassword = body.confirm_password;
+                        console.log(password, "------------", confirmPassword)
+                        if (password !== confirmPassword) {
+                            res.status(400).json({
+                                statusCode: 400,
+                                message: 'password not match with confirm password'
+                            });
+                        } else {
+                            let password2 = await bcrypt.hash(body.password, 12);
+                            adminGroup.findOneAndUpdate({
+                                email: user[0].email
+                            }, {
+                                $set: {
+                                    password: password2,
+                                    resetPasswordLinkExpired: false,
+                                }
+                            }).then((result) => {
+                                res.status(200).json({
+                                    statusCode: 200,
+                                    message: 'you are login with new password with registered email.... '
+                                })
+                            })
+                        }
                     }
+                } else {
+                    res.status(400).json({
+                        statusCode: 400,
+                        message: 'only once time link is valid '
+                    })
                 }
             })
         } catch (error) {

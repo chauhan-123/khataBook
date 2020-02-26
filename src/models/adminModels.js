@@ -35,6 +35,10 @@ var adminPanelSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    resetPasswordLinkExpired: {
+        type: Boolean,
+        default: true
+    },
 })
 
 var adminPanel = mongoose.model("adminPanel", adminPanelSchema)

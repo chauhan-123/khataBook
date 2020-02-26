@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RegistrationService } from './registration.service';
-import { UtilityService } from '../../service/utility.service';
+import { UtilityService } from '../../shared/service/utility.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -15,7 +16,7 @@ export class RegistrationComponent implements OnInit {
   submitted = false;
 
   constructor(private fb: FormBuilder, public registrationService: RegistrationService,
-    private utility: UtilityService) { }
+    private utility: UtilityService, private router: Router) { }
 
   ngOnInit() {
     this.signUpForm = this.fb.group({
@@ -57,14 +58,17 @@ export class RegistrationComponent implements OnInit {
       return;
     }
     this.registrationService.signIn(this.signInForm.value).subscribe((response: any) => {
-      console.log(response, "res")
-      this.utility.openSnackBar('you are successfully signin', true);
-      UtilityService.loader.next(false);
+      console.log(response)
+      if (response['statusCode'] === 200) {
+        localStorage.setItem('login', response.token);
+        localStorage.setItem('mobile', response['result'].mobileNumber);
+        localStorage.setItem('adminName', response['result'].adminName);
+        this.utility.openSnackBar('you are successfully signin', true);
+        UtilityService.loader.next(false);
+        this.router.navigate(['../home']);
+      }
     })
   }
-
-
-
 
   // tag swittching between signup and signin
   signup() {

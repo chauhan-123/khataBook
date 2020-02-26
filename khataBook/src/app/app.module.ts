@@ -7,9 +7,10 @@ import { RegistrationModule } from './Account/registration/registration.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { RegistrationService } from './Account/registration/registration.service';
-import { UtilityService } from './service/utility.service';
+import { UtilityService } from './shared/service/utility.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { HttpService } from './service/http.service';
+import { HttpService } from './shared/service/http.service';
+import { SharedModule } from './shared/shared.module';
 @NgModule({
   declarations: [
     AppComponent
@@ -20,7 +21,8 @@ import { HttpService } from './service/http.service';
     RegistrationModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    SharedModule,
 
   ],
   providers: [RegistrationService, UtilityService, HttpService],

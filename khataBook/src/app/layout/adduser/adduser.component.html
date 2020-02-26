@@ -1,0 +1,32 @@
+<form autocomplete="off" class="example-form" [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
+  <div>
+    <mat-form-field class="example-full-width">
+      <mat-label>User Name</mat-label>
+      <input matInput formControlName="userName" name="userName" class="input-text"
+        [ngClass]="{ 'is-invalid': submitted && f.userName.errors }" required>
+    </mat-form-field>
+    <span *ngIf="submitted && f.userName.errors" class="invalid-feedback">
+      <span *ngIf="f.userName.errors.required">user Name is required</span>
+    </span>
+  </div>
+
+  <div>
+    <mat-form-field class="example-full-width">
+      <mat-label>mobile number</mat-label>
+      <input type="text" matInput formControlName="mobileNumber" name="mobileNumber" class="input-text"
+        [ngClass]="{ 'is-invalid': submitted && f.mobileNumber.errors }" required>
+    </mat-form-field>
+    <div *ngIf="submitted && f.mobileNumber.errors" class="invalid-feedback">
+      <div *ngIf="f.mobileNumber.errors.required">mobile number is required</div>
+      <mat-error *ngIf="submitted && f.mobileNumber.errors" class="invalid-feedback">only 10 digit number is not correct
+        format
+      </mat-error>
+    </div>
+  </div>
+
+
+  <!-- submit button on login form -->
+  <div class="form-row-last">
+    <button type="submit" class="register" style="height: 45px;">Add </button>
+  </div>
+</form>

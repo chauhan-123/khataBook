@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
-import { UtilityService } from './service/utility.service';
+import { UtilityService } from './shared/service/utility.service';
 
 @Component({
   selector: 'app-root',

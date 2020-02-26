@@ -37,4 +37,8 @@ export class UtilityService {
     this.snackBar.open(message, undefined, this.snackBarConfig(successflag));
   }
 
+  clearStorage() {
+    localStorage.removeItem('login');
+  }
+
 }
