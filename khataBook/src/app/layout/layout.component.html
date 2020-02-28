@@ -1,15 +1,69 @@
 <mat-toolbar class="header" color="primary">
-
-
   <div class="sidenav" style="margin-top: 64px;">
     <a href="#about">Home</a>
-    <!-- <a href="#services">Services</a>
-    <a href="#clients">Clients</a>
-    <a href="#contact">Contact</a> -->
-
   </div>
 </mat-toolbar>
 <div class="addUser">
-
   <button style="text-align: center;" mat-raised-button color="primary" (click)="AddUser()">Add User</button>
+</div>
+
+<!-- user table for user panel -->
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="userDetails" class="mat-elevation-z8 set-layout"
+    [routerLink]="['../home/userdetails']">
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef> No. </th>
+      <td mat-cell *matCellDef="let element;let i=index"> {{getSerialNumber(i+1)}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="userName">
+      <th mat-header-cell *matHeaderCellDef> userName </th>
+      <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> email </th>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="mobileNumber">
+      <th mat-header-cell *matHeaderCellDef> mobile number </th>
+      <td mat-cell *matCellDef="let element"> {{element.mobileNumber}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef> address</th>
+      <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="time">
+      <th mat-header-cell *matHeaderCellDef> Time</th>
+      <td mat-cell *matCellDef="let element"> {{element.time | customtime}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef> Date</th>
+      <td mat-cell *matCellDef="let element"> {{element.time | date}} </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClicked(row)"></tr>
+  </table>
+
+  <div *ngIf="userDetails?.result?.length==0">
+    <h3 style="text-align: center;padding: 10px">No Record Found</h3>
+  </div>
+  <div style="background-color: aliceblue; ">
+  </div>
+  <!--  pagination  -->
+  <mat-paginator style="margin-right: 48px;" [length]="total" [pageIndex]="page-1" [pageSize]="pageSize"
+    [pageSizeOptions]="[ 5,10, 25,50, 100]" (page)="changePage($event)">
+  </mat-paginator>
 </div>

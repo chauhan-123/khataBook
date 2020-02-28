@@ -14,41 +14,37 @@ import { UtilityService } from '../shared/service/utility.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-    constructor(
-     private router:Router,
-     private _utilityService:UtilityService   
-    ) {}
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-  
-      let headers = {}; 
-      // let headers = {
-      //   'Content-Type': 'application/json'
-      // };
-      if(localStorage.getItem('login')) {
-         headers['authorization'] = 'Bearer ' + localStorage.getItem('login');
-      }
-  
-      request = request.clone({
-        setHeaders: headers
-      });
-   
-      
-      return next.handle(request).pipe(
-        tap(
-        (data) =>{
-          if(data instanceof HttpResponse) {
+  constructor(
+    private router: Router,
+    private _utilityService: UtilityService
+  ) { }
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    let headers = {
+      'Content-Type': 'application/json'
+    };
+    if (localStorage.getItem('login')) {
+      headers['authorization'] = 'Bearer ' + localStorage.getItem('login');
+    }
+
+    request = request.clone({
+      setHeaders: headers
+    });
+
+    return next.handle(request).pipe(
+      tap(
+        (data) => {
+          if (data instanceof HttpResponse) {
             UtilityService.loader.next(false);
           }
         },
-        (err: any) => {
+        (error: any) => {
           UtilityService.loader.next(false);
-          console.log(err)
-          if (err instanceof HttpErrorResponse) {
-            console.log('req url :: ' + request.url);
-            //   this._utilityService.errorAlert(err);
-        
+          if (error instanceof HttpErrorResponse) {
+            let message = error['error']['error'];
+            console.log(message)
+            this._utilityService.openSnackBar(message, true);
           }
         }
       ));
-    }
   }
+}

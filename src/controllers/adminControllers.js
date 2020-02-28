@@ -7,7 +7,6 @@ var nodemailer = require('nodemailer');
 
 const admin = {
     getAdminRegistrationData: (req, res) => {
-        console.log(req.body)
         let {
             body
         } = req;
@@ -184,7 +183,9 @@ const admin = {
                         'email': body.email
                     }, {
                         $set: {
-                            'time': time
+                            'time': time,
+                            resetPasswordLinkExpired: true,
+
                         }
                     }).then((result) => {
                         res.status(200).json({

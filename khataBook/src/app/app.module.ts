@@ -11,9 +11,11 @@ import { UtilityService } from './shared/service/utility.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpService } from './shared/service/http.service';
 import { SharedModule } from './shared/shared.module';
+import { LayoutService } from './layout/layout.service';
+import { LayoutModule } from '../app/layout/layout.module';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -23,9 +25,10 @@ import { SharedModule } from './shared/shared.module';
     HttpClientModule,
     MatSnackBarModule,
     SharedModule,
+    LayoutModule,
 
   ],
-  providers: [RegistrationService, UtilityService, HttpService],
+  providers: [RegistrationService, UtilityService, HttpService, LayoutService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

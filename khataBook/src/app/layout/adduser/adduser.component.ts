@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { LayoutService } from '../layout.service';
+import { UtilityService } from '../../shared/service/utility.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-adduser',
@@ -10,29 +14,39 @@ export class AdduserComponent implements OnInit {
   addUserForm: FormGroup;
   submitted = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private _dialogRef: MatDialogRef<AdduserComponent>,
+    @Inject(MAT_DIALOG_DATA) private _data: any,
+    private fb: FormBuilder, public dialog: MatDialog, private layoutService: LayoutService,
+    private utility: UtilityService, private router: Router) {
     this.addUserForm = this.fb.group({
       userName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]],
       mobileNumber: ['', [Validators.required, Validators.maxLength(10), Validators.pattern('^[0-9]*$')]],
+      address: ['', Validators.required],
     });
   }
 
   ngOnInit() {
   }
 
-  // signup functionlity of signup page
+
+  // Add user functionlity of signup page
   onSubmit() {
     this.submitted = true;
-    console.log(this.addUserForm.value)
     // stop here if form is invalid
     if (this.addUserForm.invalid) {
-      console.log(this.addUserForm.invalid)
       return;
     }
-    // this.registrationService.register(this.signUpForm.value).subscribe((response: any) => {
-    //   this.utility.openSnackBar('you are successfully signup', true);
-    //   UtilityService.loader.next(false);
-    // })
+    this.layoutService.addUser(this.addUserForm.value).subscribe((response: any) => {
+      this.utility.openSnackBar('user data added successfully', true);
+      UtilityService.loader.next(false);
+      this._dialogRef.close();
+    })
+  }
+
+  // this function is used for close the model
+  closeModel() {
+    this._dialogRef.close();
   }
 
   // convenience getter for easy access to form fields
