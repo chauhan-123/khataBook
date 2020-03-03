@@ -15,7 +15,7 @@ import { UserdetailComponent } from './userdetail/userdetail.component';
 
 const layout: Routes = [
   { path: '', component: LayoutComponent },
-  { path: 'userdetails', component: UserdetailComponent }
+  { path: 'addMoney', component: UserdetailComponent }
 
 ]
 
@@ -39,6 +39,6 @@ const layout: Routes = [
     CustomtimeModule
   ],
   entryComponents: [AdduserComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class LayoutModule { }

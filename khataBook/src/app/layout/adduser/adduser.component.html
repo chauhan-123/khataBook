@@ -22,11 +22,7 @@
       <mat-label>mobile number</mat-label>
       <input type="text" matInput formControlName="mobileNumber" name="mobileNumber" class="input-text"
         [ngClass]="{ 'is-invalid': submitted && f.mobileNumber.errors }" maxlength="10" required>
-
       <mat-error *ngIf="f.mobileNumber.invalid">mobile number is required</mat-error>
-      <!-- <mat-error *ngIf="f.mobileNumber.errors.maxlength">only 10 digit number is
-        allowed
-      </mat-error> -->
     </mat-form-field>
 
     <!-- Address name field -->

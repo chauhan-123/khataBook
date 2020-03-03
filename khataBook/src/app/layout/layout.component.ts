@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdduserComponent } from './adduser/adduser.component';
-import { MatDialog, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatTableDataSource, MatPaginator } from '@angular/material';
 import { LayoutService } from './layout.service';
 import { Pagination } from '../model/pagination';
 
@@ -11,7 +11,7 @@ import { Pagination } from '../model/pagination';
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent extends Pagination implements OnInit {
-  displayedColumns: string[] = ['position', 'userName', 'email', 'mobileNumber', 'address', 'time', 'date'];
+  displayedColumns: string[] = ['position', 'userName', 'email', 'mobileNumber', 'address', 'time', 'date', 'Total'];
   userDetails = new MatTableDataSource<any>([]);
 
   constructor(public dialog: MatDialog, private layoutService: LayoutService) {
@@ -23,9 +23,11 @@ export class LayoutComponent extends Pagination implements OnInit {
   }
 
   getUserDetails() {
-    this.layoutService.getUserDetails().subscribe(response => {
+    var data = { ...this.validPageOptions }
+    this.layoutService.getUserDetails(data).subscribe(response => {
+      console.log(response, '4', response['total'])
       this.userDetails = response['result'];
-      this.total = response['result'].length;
+      this.total = response['total'];
     })
   }
 
@@ -35,6 +37,7 @@ export class LayoutComponent extends Pagination implements OnInit {
       height: '350px'
     })
     dialogRef.afterClosed().subscribe(result => {
+      this.getUserDetails();
     });
   }
 
@@ -43,8 +46,16 @@ export class LayoutComponent extends Pagination implements OnInit {
     return i + ((this.validPageOptions['page'] - 1) * this.validPageOptions['limit']);
   }
 
+  /*
+Method For Changing The Pagination
+*/
+  changePage(event: MatPaginator) {
+    this.pageOptionsOnChange = event;
+    this.getUserDetails();
+  }
 
 
+  // click the row
   onRowClicked(row) {
     this.layoutService.sendRowData(row);
   }

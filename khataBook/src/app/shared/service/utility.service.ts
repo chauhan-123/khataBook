@@ -15,11 +15,11 @@ export class UtilityService {
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   public verticalPosition: MatSnackBarVerticalPosition = 'top';
   public setAutoHide = true;
-  public autoHide = 2077777777777700;
+  public autoHide = 2000;
   public addExtraClass = false;
 
 
-  public snackBarConfig(successflag, message) {
+  public snackBarConfig(successflag) {
     let config = new MatSnackBarConfig();
     config.verticalPosition = this.verticalPosition;
     config.horizontalPosition = this.horizontalPosition;
@@ -28,15 +28,20 @@ export class UtilityService {
       config.panelClass = ['red-snackbar']
     }
     else {
-      debugger
       config.panelClass = this.addExtraClass ? ['party'] : undefined;
     }
     return config;
   }
 
+
+  // openSnackBar(message: string, successflag: boolean) {
+  //   console.log(message)
+  //   this.snackBar.open(message, successflag, {
+  //     duration: 2000,
+  //   });
+  // }
   openSnackBar(message: string, successflag: boolean) {
-    console.log(message)
-    this.snackBar.open(message, undefined, this.snackBarConfig(successflag, message));
+    this.snackBar.open(message, undefined, this.snackBarConfig(successflag));
   }
 
   clearStorage() {

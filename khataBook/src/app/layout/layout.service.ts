@@ -34,8 +34,8 @@ export class LayoutService {
   }
 
   // this function is used for get user details from backend side
-  getUserDetails() {
-    return this.http.get(`${this.url}user_panel/getUserDetails`);
+  getUserDetails(info?) {
+    return this.http.post(`${this.url}user_panel/getUserDetails`, info);
   }
 
   // this function is  used for add and submit the money from admin panel

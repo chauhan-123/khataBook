@@ -27,11 +27,11 @@ var AddUserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    // Total: {
-    //     type: Number,
-    //     default: null
-    //     // required: [true, 'total field is required']
-    // },
+    Total: {
+        type: Number,
+        default: null
+        // required: [true, 'total field is required']
+    },
     // all: {
     //     type: Number,
     //     default: null

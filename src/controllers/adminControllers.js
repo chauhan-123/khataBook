@@ -191,7 +191,7 @@ const admin = {
                         res.status(200).json({
                             statusCode: 200,
                             message: 'Reset pasword link send to your email..',
-                            result: user
+                            result: result
                         });
                     }).catch(error => res.status(500).json({
                         error: error
@@ -226,7 +226,6 @@ const admin = {
                     var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
                     var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
                     var diffSec = diffMins / 1000;
-                    console.log(diffMins)
                     if (diffMins >= 5) { // thats is 5 minute..
                         res.status(500).json({
                             statusCode: 500,
@@ -235,7 +234,6 @@ const admin = {
                     } else {
                         var password = body.password;
                         var confirmPassword = body.confirm_password;
-                        console.log(password, "------------", confirmPassword)
                         if (password !== confirmPassword) {
                             res.status(400).json({
                                 statusCode: 400,

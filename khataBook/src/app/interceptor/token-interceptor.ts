@@ -40,8 +40,8 @@ export class TokenInterceptor implements HttpInterceptor {
         (error: any) => {
           UtilityService.loader.next(false);
           if (error instanceof HttpErrorResponse) {
-            let message = error['error']['error'];
-            console.log(message)
+            
+            let message = error['error'].message;
             this._utilityService.openSnackBar(message, true);
           }
         }

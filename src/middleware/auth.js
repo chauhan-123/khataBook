@@ -10,12 +10,11 @@ let auth = (req, res, next) => {
     // Remove Bearer from string
     token = token.slice(7, token.length);
   }
-  console.log(token)
   if (token) {
     jwt.verify(token, config.secret, (error, decoded) => {
       if (error) {
         return res.status(500).json({
-          error: 'Token is expired',
+          message: 'Token is expired',
           success: false
         })
       } else {
@@ -26,7 +25,7 @@ let auth = (req, res, next) => {
   } else {
     return res.status(500).json({
       success: true,
-      error: 'Auth token is not supplied'
+      message: 'Auth token is not supplied'
     });
   }
 };

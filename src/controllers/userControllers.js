@@ -14,7 +14,6 @@ const user = {
                 address: body.address
             }
             var mydata = new AddUserGroup(data);
-            console.log(mydata)
             await mydata.save().then(item => {
                 res.status(200).json({
                     statusCode: 200,
@@ -35,41 +34,55 @@ const user = {
     },
 
     getUserDetails: (req, res) => {
-        console.log("get user details");
         try {
-            AddUserGroup.find().then(item => {
+            let page = (req.body.page - 1);
+            let limit = req.body.limit;
+            let promises = [
+                findUser(page, limit, ),
+                AddUserGroup.find().countDocuments()
+            ];
+            Promise.all(promises).then(data => {
                 res.status(200).json({
                     statusCode: 200,
                     message: 'user data get successfully',
-                    result: item
+                    result: data[0],
+                    total: data[1]
                 })
             })
         } catch (error) {
             res.status(500).json({
                 statusCode: 500,
-                error: error
+                error: error.message
             })
         }
     },
 
-    getMoneyData: (req, res) => {
+    getMoneyData: async (req, res) => {
         let {
             body
         } = req;
+        var total;
         try {
+            if (body.Total < body.all) {
+                total = body.all - body.Total;
+            } else if (body.Total > body.all) {
+                total = body.Total - body.all;
+            } else {
+                total = body.Total;
+            }
             AddUserGroup.findOneAndUpdate({
                 'email': body.email
             }, {
                 $set: {
-                    'Total': body.Total,
-                    'all': body.all,
+                    'Total': total,
+                    // 'all': body.all,
 
                 }
             }).then((result) => {
                 res.status(200).json({
                     statusCode: 200,
                     message: 'money added successfully',
-                    result: user
+                    result: result
                 });
             }).catch(error => res.status(500).json({
                 error: error
@@ -82,6 +95,22 @@ const user = {
             })
         }
     }
+}
+
+async function findUser(skip, limit) {
+    let obj = {};
+    let agg = [];
+    if (limit) {
+        agg.push({
+            $skip: limit * skip
+        }, {
+            $limit: limit
+        });
+    }
+
+    let users = await AddUserGroup.aggregate(agg);
+    agg = [];
+    return users;
 }
 
 module.exports = user;

@@ -3,7 +3,7 @@ const userCtrl = require('../controllers/userControllers');
 const auth = require('../middleware/auth');
 
 router.post('/addUser', auth, userCtrl.getUserData);
-router.get('/getUserDetails', userCtrl.getUserDetails);
-router.post('/addMoney', userCtrl.getMoneyData);
+router.post('/getUserDetails', auth, userCtrl.getUserDetails);
+router.post('/addMoney', auth, userCtrl.getMoneyData);
 
 module.exports = router;
