@@ -25,7 +25,6 @@ export class LayoutComponent extends Pagination implements OnInit {
   getUserDetails() {
     var data = { ...this.validPageOptions }
     this.layoutService.getUserDetails(data).subscribe(response => {
-      console.log(response, '4', response['total'])
       this.userDetails = response['result'];
       this.total = response['total'];
     })

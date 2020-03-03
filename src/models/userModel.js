@@ -30,16 +30,41 @@ var AddUserSchema = new mongoose.Schema({
     Total: {
         type: Number,
         default: null
-        // required: [true, 'total field is required']
     },
-    // all: {
-    //     type: Number,
-    //     default: null
-    //     // required: [true, 'All field is required']
-    // }
+
 })
 
-var userPanel = mongoose.model("userPanel", AddUserSchema)
+var productsellSchema = new mongoose.Schema({
+    email: {
+        type: String
+    },
+    amount: {
+        type: Number
+    },
+    giveMoney: {
+        type: Number
+    },
+    currentDate: {
+        type: Date,
+        default: Date.now
+    },
+    promiseDate: {
+        type: Date,
+        default: Date.now
+    },
+    balance: {
+        type: Number,
+        default: null
+    },
+    balanceType: {
+        type: Boolean,
+        default: true
+    }
+})
+
+var userPanel = mongoose.model("userPanel", AddUserSchema);
+var sellProduct = mongoose.model("sellProduct", productsellSchema);
 
 
 module.exports.userPanel = userPanel;
+module.exports.sellProduct = sellProduct;

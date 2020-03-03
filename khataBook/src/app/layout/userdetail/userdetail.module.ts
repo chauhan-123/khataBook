@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserdetailComponent } from './userdetail.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CustomtimeModule } from '../../pipe/customtime.module';
 
 
 
@@ -10,7 +11,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CustomtimeModule
   ]
 })
 export class UserdetailModule { }

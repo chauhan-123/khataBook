@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError, BehaviorSubject, Subject } from 'rxjs';
 import { UtilityService } from '../shared/service/utility.service';
+import { ADMIN_URL } from '../constant/url';
 
 @Injectable({
   providedIn: 'root'
@@ -34,13 +35,18 @@ export class LayoutService {
   }
 
   // this function is used for get user details from backend side
-  getUserDetails(info?) {
+  getUserDetails(info) {
     return this.http.post(`${this.url}user_panel/getUserDetails`, info);
   }
 
   // this function is  used for add and submit the money from admin panel
   submitUserMoney(info) {
-    return this.http.post(`${this.url}user_panel/addMoney`, info)
+    return this.http.post(`${this.url}user_panel/sellProductDetails`, info)
+  }
+
+  // this function is used for get unique details
+  getIndividualDetails(info) {
+    return this.http.post(`${this.url}user_panel/getuniqueUserMoneyDetail`, info)
   }
 
   // this function handle the HttpResponse Errors from admin panel 

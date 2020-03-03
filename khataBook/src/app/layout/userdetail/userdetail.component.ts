@@ -5,15 +5,16 @@ import { LayoutService } from '../layout.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { validateHorizontalPosition } from '@angular/cdk/overlay';
 import { UtilityService } from '../../shared/service/utility.service';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { Pagination } from '../../model/pagination';
 
 @Component({
   selector: 'app-userdetail',
   templateUrl: './userdetail.component.html',
   styleUrls: ['./userdetail.component.scss']
 })
-export class UserdetailComponent implements OnInit {
-  displayedColumns: string[] = ['time', 'date'];
+export class UserdetailComponent extends Pagination implements OnInit {
+  displayedColumns: string[] = ['position', 'time', 'date', 'amount', 'giveMoney', 'balance'];
   userDetails = new MatTableDataSource<any>([]);
 
   showViewTable = true;
@@ -24,46 +25,62 @@ export class UserdetailComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private layoutService: LayoutService,
     private utilityService: UtilityService, private router: Router) {
+    super();
     layoutService.uniqueUser.subscribe(val => {
       this.data = val
     })
     this.userDetailsForm = this.fb.group({
-      Total: ['', Validators.required],
-      all: ['', Validators.required]
+      amount: ['', Validators.required],
+      giveMoney: ['', Validators.required]
     })
   }
 
   ngOnInit() {
   }
 
-  // getUserDetails() {
-  //   this.layoutService.getUserDetails().subscribe(response => {
-  //     console.log(response)
-  //   })
-  // }
+  // this function is used for unique user details
+  getUniqueDetails() {
+    let data = { ...this.validPageOptions }
+    data['email'] = this.data['email']
+    this.layoutService.getIndividualDetails(data).subscribe(response => {
+      console.log(response)
+      this.userDetails = response['result'];
+      // this.total = response['result'].length;
+    })
+  }
 
+  // this function is used for submit the money data
   onSubmit() {
-    // console.log(this.userDetailsForm.value, this.data)
     this.submitted = true;
-
     if (this.userDetailsForm.invalid) {
       return
     }
     this.userDetailsForm.value['email'] = this.data['email']
     this.layoutService.submitUserMoney(this.userDetailsForm.value).subscribe(response => {
       this.utilityService.openSnackBar('money added successfully', true);
-      this.router.navigate(['/home'])
+      this.getUniqueDetails();
+      // this.router.navigate(['/home'])
     })
   }
 
+  // this function is used for get the view page details
   viewDetailPage() {
     this.showViewTable = false;
-    
-    this.layoutService.getUserDetails().subscribe(response => {
-      console.log(response)
-    })
+    this.getUniqueDetails();
   }
 
+  /*
+Method For Changing The Pagination
+*/
+  changePage(event: MatPaginator) {
+    this.pageOptionsOnChange = event;
+    this.getUniqueDetails();
+  }
+
+  // change the serial number
+  getSerialNumber(i) {
+    return i + ((this.validPageOptions['page'] - 1) * this.validPageOptions['limit']);
+  }
 
   // convenience getter for easy access to form fields
   get f() { return this.userDetailsForm.controls; }
