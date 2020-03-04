@@ -34,12 +34,7 @@ export class UtilityService {
   }
 
 
-  // openSnackBar(message: string, successflag: boolean) {
-  //   console.log(message)
-  //   this.snackBar.open(message, successflag, {
-  //     duration: 2000,
-  //   });
-  // }
+
   openSnackBar(message: string, successflag: boolean) {
     this.snackBar.open(message, undefined, this.snackBarConfig(successflag));
   }

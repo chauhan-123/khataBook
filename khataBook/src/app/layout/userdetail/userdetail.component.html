@@ -44,8 +44,23 @@
                 </mat-error>
               </mat-form-field>
 
+              <div>
+                <mat-form-field style="margin: 4px;">
+                  <mat-label>Current date</mat-label>
+                  <input matInput [matDatepicker]="picker" formControlName="currentDate" name="currentDate"
+                    [(ngModel)]="userDetailsForm.currentDate" [max]="today">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
 
-
+                <mat-form-field>
+                  <mat-label>Promise date</mat-label>
+                  <input matInput [matDatepicker]="picker1" formControlName="promiseDate" name="promiseDate"
+                    [(ngModel)]="userDetailsForm.promiseDate" [min]="today">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+              </div>
 
               <!-- <td class="col-sm-1 col-md-1" style="text-align: center">
               <input type="email" class="form-control" id="exampleInputEmail1" value="3">
@@ -171,9 +186,7 @@
   </div>
   <div style="background-color: aliceblue; ">
   </div>
-  <div style="text-align: center;font-size: 20px;">
-    <p>Total = {{'======'}}</p>
-  </div>
+
   <!--  pagination  -->
   <mat-paginator style="margin-right: 48px;" [length]="total" [pageIndex]="page-1" [pageSize]="pageSize"
     [pageSizeOptions]="[ 5,10, 25,50, 100]" (page)="changePage($event)">

@@ -2,13 +2,14 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LayoutComponent } from './layout.component';
 import { RouterModule, Routes } from '@angular/router';
-import { MatToolbarModule, MatButtonModule, MatDialogModule, MatInputModule, MatFormFieldModule, MatIconModule, MatCardModule, MatTableModule } from '@angular/material';
+import { MatToolbarModule, MatButtonModule, MatDialogModule, MatInputModule, MatFormFieldModule, MatIconModule, MatCardModule, MatTableModule, MatNativeDateModule } from '@angular/material';
 import { AdduserComponent } from './adduser/adduser.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CustomtimeModule } from '../pipe/customtime.module';
 import { UserdetailComponent } from './userdetail/userdetail.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 
@@ -36,7 +37,9 @@ const layout: Routes = [
     MatCardModule,
     MatTableModule,
     MatPaginatorModule,
-    CustomtimeModule
+    CustomtimeModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   entryComponents: [AdduserComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

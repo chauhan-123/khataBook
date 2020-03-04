@@ -40,9 +40,13 @@ export class TokenInterceptor implements HttpInterceptor {
         (error: any) => {
           UtilityService.loader.next(false);
           if (error instanceof HttpErrorResponse) {
-            
+
             let message = error['error'].message;
             this._utilityService.openSnackBar(message, true);
+            if (error.status === 500 || error.statusText == '"Internal Server Error"') {
+              this._utilityService.clearStorage();
+              this.router.navigate(['/registration']);
+            }
           }
         }
       ));

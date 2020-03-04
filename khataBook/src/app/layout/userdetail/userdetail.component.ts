@@ -14,6 +14,8 @@ import { Pagination } from '../../model/pagination';
   styleUrls: ['./userdetail.component.scss']
 })
 export class UserdetailComponent extends Pagination implements OnInit {
+  today = new Date();
+
   displayedColumns: string[] = ['position', 'time', 'date', 'amount', 'giveMoney', 'balance'];
   userDetails = new MatTableDataSource<any>([]);
 
@@ -22,16 +24,20 @@ export class UserdetailComponent extends Pagination implements OnInit {
   element: any;
   submitted = false;
   data: String;
+  unavailability: any;
 
   constructor(private fb: FormBuilder, private layoutService: LayoutService,
     private utilityService: UtilityService, private router: Router) {
     super();
+    this.today.setDate(this.today.getDate());
     layoutService.uniqueUser.subscribe(val => {
       this.data = val
     })
     this.userDetailsForm = this.fb.group({
       amount: ['', Validators.required],
-      giveMoney: ['', Validators.required]
+      giveMoney: ['', Validators.required],
+      currentDate: ['', Validators.required],
+      promiseDate: ['', Validators.required],
     })
   }
 
@@ -45,7 +51,7 @@ export class UserdetailComponent extends Pagination implements OnInit {
     this.layoutService.getIndividualDetails(data).subscribe(response => {
       console.log(response)
       this.userDetails = response['result'];
-      // this.total = response['result'].length;
+      this.total = response['total'];
     })
   }
 
@@ -55,6 +61,7 @@ export class UserdetailComponent extends Pagination implements OnInit {
     if (this.userDetailsForm.invalid) {
       return
     }
+    console.log(this.userDetailsForm.value)
     this.userDetailsForm.value['email'] = this.data['email']
     this.layoutService.submitUserMoney(this.userDetailsForm.value).subscribe(response => {
       this.utilityService.openSnackBar('money added successfully', true);

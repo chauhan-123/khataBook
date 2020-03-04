@@ -98,12 +98,13 @@ const user = {
     },
 
     getSellProductDetails: async (req, res) => {
-        console.log(req.body)
         let {
             body
         } = req;
         var total;
         var Amount = 0;
+        var Amount1 = 0;
+        var Amount2 = 0;
         try {
             if (body.amount < body.giveMoney) {
                 total = body.giveMoney - body.amount;
@@ -119,41 +120,65 @@ const user = {
                 amount: body.amount,
                 giveMoney: body.giveMoney,
                 balance: total,
-                balanceType: balanceType
-                // currentDate: body.currentDate,
-                // promiseDate: body.promiseDate
+                balanceType: balanceType,
+                currentDate: body.currentDate,
+                promiseDate: body.promiseDate
             }
             var mydata = new sellProductGroup(data);
             let promises = [
-                saveData(mydata),
-                sellProductGroup.find().then((user, error) => {
-                    user.forEach(element => {
-                        Amount = element.balance + Amount;
-                    });
-                    console.log(Amount)
+                saveData(mydata).then((data, error) => {
+                    sellProductGroup.find().then((user, error) => {
+                        user.forEach(element => {
+                            if (element.balanceType == true && element.email == body.email) {
+                                Amount1 = element.balance + Amount1;
+                            }
+                            if (element.balanceType == false && element.email == body.email) {
+                                Amount2 = element.balance + Amount2;
+                            }
+                        });
+                        if (Amount1 > Amount2) {
+                            Amount = Amount1 - Amount2;
+                            TOTAL = true;
+                        } else {
+                            Amount = Amount2 - Amount1;
+                            TOTAL = false
+                        }
+                        AddUserGroup.findOneAndUpdate({
+                            'email': body.email
+                        }, {
+                            $set: {
+                                'Total': Amount,
+                                'TOTAL': TOTAL
+                            }
+                        }).then((result) => {
+                            res.status(200).json({
+                                statusCode: 200,
+                                message: 'add money successfully',
+                                result: result
+                            });
+                        }).catch(error => res.status(500).json({
+                            error: error
+                        }))
+                    })
                 })
             ]
             Promise.all(promises).then(item => {
-                let data = {
-                    TotalMoney: Amount,
-                    result: item[0]
-                }
-                console.log(data, "bhai chl jaa yr")
-                res.status(200).json({
-                    statusCode: 200,
-                    message: 'sell item added successfully',
-                    total: data
-                })
+                sellProductGroup.findOneAndUpdate({
+                    'email': body.email
+                }, {
+                    $set: {
+                        'TOTAL': Amount
+                    }
+                }).then((result) => {
+                    res.status(200).json({
+                        statusCode: 200,
+                        message: 'add money successfully',
+                        result: result
+                    });
+                }).catch(error => res.status(500).json({
+                    error: error
+                }))
             })
-            // await mydata.save().then(item => {
-            //     res.status(200).json({
-            //         statusCode: 200,
-            //         message: 'sell item added successfully',
-            //         result: item
-            //     })
-            // })
-
-
         } catch (error) {
             res.status(500).json({
                 statusCode: 500,
@@ -163,7 +188,6 @@ const user = {
     },
 
     getUniqueSellProduct: (req, res) => {
-        console.log(req.body)
         let {
             body
         } = req;
@@ -171,18 +195,19 @@ const user = {
         try {
             var page = (req.body.page - 1);
             var limit = req.body.limit;
-
-            sellProductGroup.find({
-                'email': body.email
-            }).then((user, error) => {
-                [
-                    findUser(page, limit),
-                    sellProductGroup.count().countDocuments()
-                ]
+            var email = body.email;
+            let promises = [
+                findUniqueUser(email).skip(limit * page).limit(limit),
+                sellProductGroup.find({
+                    'email': body.email
+                }).countDocuments()
+            ];
+            Promise.all(promises).then(data => {
                 res.status(200).json({
                     statusCode: 200,
-                    message: 'individual user data get successfully',
-                    result: user,
+                    message: 'individual data get successfully',
+                    result: data[0],
+                    total: data[1]
                 })
             })
         } catch (error) {
@@ -196,15 +221,14 @@ const user = {
 
 }
 
-async function saveData(mydata) {
-    await mydata.save().then(item => {
-        // res.status(200).json({
-        //     statusCode: 200,
-        //     message: 'sell item added successfully',
-        //     result: item
-        // })
+function saveData(mydata) {
+    return mydata.save()
+}
+
+function findUniqueUser(email) {
+    return sellProductGroup.find({
+        'email': email
     })
-    return mydata
 }
 
 async function findUser(skip, limit) {
@@ -222,5 +246,7 @@ async function findUser(skip, limit) {
     agg = [];
     return users;
 }
+
+
 
 module.exports = user;

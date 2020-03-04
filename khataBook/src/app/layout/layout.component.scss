@@ -19,7 +19,7 @@ body {
   text-decoration: none;
   font-size: 25px;
   color: #818181;
-  display: block;
+  // display: block;
 }
 
 .sidenav a:hover {
@@ -39,9 +39,7 @@ body {
     padding-top: 15px;
   }
 
-  .sidenav a {
-    font-size: 18px;
-  }
+
 }
 
 
@@ -60,3 +58,12 @@ table {
   margin-left: 14%;
 }
 
+.example-icon {
+  padding-left: 1175px;
+}
+
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}

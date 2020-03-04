@@ -31,6 +31,10 @@ var AddUserSchema = new mongoose.Schema({
         type: Number,
         default: null
     },
+    TOTAL: {
+        type: Boolean,
+        default: true
+    }
 
 })
 
@@ -59,7 +63,8 @@ var productsellSchema = new mongoose.Schema({
     balanceType: {
         type: Boolean,
         default: true
-    }
+    },
+
 })
 
 var userPanel = mongoose.model("userPanel", AddUserSchema);

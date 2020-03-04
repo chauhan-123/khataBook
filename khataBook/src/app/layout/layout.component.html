@@ -1,6 +1,12 @@
 <mat-toolbar class="header" color="primary">
   <div class="sidenav" style="margin-top: 64px;">
-    <a href="#about">Home</a>
+    <mat-icon class="material-icons"> home</mat-icon>
+    <a [routerLink]="['/home']">Home</a>
+  </div>
+  <div class="example-icon">
+    <button mat-button (click)="logout()" matTooltip="Logout">
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
   </div>
 </mat-toolbar>
 <div class="addUser">
@@ -8,7 +14,26 @@
 </div>
 
 <!-- user table for user panel -->
+<div class="set-layout">
 
+  <mat-form-field class="search_filter">
+    <input type="text" matInput placeholder="search by userName" [(ngModel)]="search" name="search">
+    <button type="button" mat-button matSuffix mat-icon-button aria-label="Clear" (click)="resetSearch()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <button type="button" mat-button (click)="searchResult()" class="search-btn" matSuffix>
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+<!-- <div class="row">
+  <div class="col-md-12">
+    <div class="form-btn text-center mt-3">
+      <button filter_btn mat-stroked-button (click)="resetFilter()"> Reset </button>
+      <button filter_btn mat-raised-button color="primary" (click)="filter()"> Filter </button>
+    </div>
+  </div>
+</div> -->
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="userDetails" class="mat-elevation-z8 set-layout" [routerLink]="['../home/addMoney']">
 
@@ -57,7 +82,7 @@
     <!-- Total -->
     <ng-container matColumnDef="Total">
       <th mat-header-cell *matHeaderCellDef> Total</th>
-      <td mat-cell *matCellDef="let element"> {{element.Total?element.Total: '-'  }} </td>
+      <td mat-cell *matCellDef="let element"> {{element.TOTAL == true?(+element.Total):(-element.Total||'-' )  }} </td>
     </ng-container>
 
 

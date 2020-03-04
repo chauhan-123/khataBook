@@ -39,6 +39,7 @@ export class AdduserComponent implements OnInit {
       return;
     }
     this.layoutService.addUser(this.addUserForm.value).subscribe((response: any) => {
+      console.log("12", response)
       this.utility.openSnackBar('user data added successfully', true);
       UtilityService.loader.next(false);
       this._dialogRef.close();
