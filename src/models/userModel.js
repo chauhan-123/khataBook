@@ -4,7 +4,8 @@ var AddUserSchema = new mongoose.Schema({
     userName: {
         type: String,
         required: [true, 'adminName field is required'],
-        trim: true
+        trim: true,
+        text: true
     },
     email: {
         type: String,

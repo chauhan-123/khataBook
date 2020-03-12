@@ -9,15 +9,15 @@
     </button>
   </div>
 </mat-toolbar>
-<div class="addUser">
-  <button style="text-align: center;" mat-raised-button color="primary" (click)="AddUser()">Add User</button>
+<div class="set-layout">
+  <button mat-raised-button color="primary" (click)="AddUser()">Add User</button>
 </div>
 
-<!-- user table for user panel -->
+<!-- search for user panel -->
 <div class="set-layout">
-
   <mat-form-field class="search_filter">
-    <input type="text" matInput placeholder="search by userName" [(ngModel)]="search" name="search">
+    <input type="text" matInput placeholder="search by userName" [(ngModel)]="search" name="search"
+      (keyup.enter)="searchResult()">
     <button type="button" mat-button matSuffix mat-icon-button aria-label="Clear" (click)="resetSearch()">
       <mat-icon>close</mat-icon>
     </button>
@@ -26,14 +26,14 @@
     </button>
   </mat-form-field>
 </div>
-<!-- <div class="row">
-  <div class="col-md-12">
-    <div class="form-btn text-center mt-3">
-      <button filter_btn mat-stroked-button (click)="resetFilter()"> Reset </button>
-      <button filter_btn mat-raised-button color="primary" (click)="filter()"> Filter </button>
-    </div>
-  </div>
-</div> -->
+
+<!-- filter for user panel -->
+<div>
+  <app-userfilter></app-userfilter>
+
+</div>
+
+<!-- user table for user panel -->
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="userDetails" class="mat-elevation-z8 set-layout" [routerLink]="['../home/addMoney']">
 
@@ -96,7 +96,7 @@
   <div style="background-color: aliceblue; ">
   </div>
   <!--  pagination  -->
-  <mat-paginator style="margin-right: 48px;" [length]="total" [pageIndex]="page-1" [pageSize]="pageSize"
-    [pageSizeOptions]="[ 5,10, 25,50, 100]" (page)="changePage($event)">
+  <mat-paginator [length]="total" [pageIndex]="page-1" [pageSize]="pageSize" [pageSizeOptions]="[ 5,10, 25,50, 100]"
+    (page)="changePage($event)">
   </mat-paginator>
 </div>

@@ -38,8 +38,9 @@ const user = {
         try {
             let page = (req.body.page - 1);
             let limit = req.body.limit;
+            let search = req.body.search;
             let promises = [
-                findUser(page, limit, ),
+                findUser(page, limit, search),
                 AddUserGroup.find().countDocuments()
             ];
             Promise.all(promises).then(data => {
@@ -216,9 +217,53 @@ const user = {
                 error: error.message
             })
         }
+    },
+
+    getUserFilterDetails: (req, res) => {
+        let From = req.body.from;
+        let To = req.body.to;
+        let promises = [
+            findFilter(From, To)
+        ]
+        Promise.all(promises).then(data => {
+            res.status(200).json({
+                statusCode: 200,
+                message: 'filter data get successfully',
+                result: data[0],
+            })
+        })
     }
 
 
+}
+
+async function findFilter(From, To) {
+    let agg = [];
+    let from = new Date(From);
+    from.setDate(from.getDate() + 1);
+    let to = new Date(To);
+    to.setDate(to.getDate() + 1);
+    if (From && To) {
+        agg.push({
+            $match: {
+                $and: [{
+                        time: {
+                            $gte: new Date(from)
+                        }
+                    },
+                    {
+                        time: {
+                            $lte: new Date(to)
+                        }
+                    }
+                ]
+            }
+        })
+    }
+
+    let users = await AddUserGroup.aggregate(agg);
+    agg = [];
+    return users
 }
 
 function saveData(mydata) {
@@ -231,20 +276,25 @@ function findUniqueUser(email) {
     })
 }
 
-async function findUser(skip, limit) {
+async function findUser(skip, limit, search = '') {
     let obj = {};
-    let agg = [];
-    if (limit) {
-        agg.push({
-            $skip: limit * skip
-        }, {
-            $limit: limit
-        });
-    }
+    var agg = [];
+    if (search) {
+        await AddUserGroup.find({
+            "userName": {
+                '$regex': search
+            }
+        }).skip(limit * skip).limit(limit).then((user, error) => {
+            agg = user;
 
-    let users = await AddUserGroup.aggregate(agg);
-    agg = [];
-    return users;
+        })
+    } else {
+        await AddUserGroup.find({}).skip(limit * skip).limit(limit).then((user, error) => {
+            agg = user;
+        })
+    }
+    return agg
+
 }
 
 

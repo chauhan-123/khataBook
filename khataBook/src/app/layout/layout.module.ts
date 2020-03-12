@@ -10,6 +10,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CustomtimeModule } from '../pipe/customtime.module';
 import { UserdetailComponent } from './userdetail/userdetail.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { UserfilterComponent } from './userfilter/userfilter.component';
 
 
 
@@ -21,7 +22,7 @@ const layout: Routes = [
 ]
 
 @NgModule({
-  declarations: [LayoutComponent, AdduserComponent, UserdetailComponent],
+  declarations: [LayoutComponent, AdduserComponent, UserdetailComponent, UserfilterComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(layout),
@@ -41,7 +42,7 @@ const layout: Routes = [
     MatDatepickerModule,
     MatNativeDateModule
   ],
-  entryComponents: [AdduserComponent],
+  entryComponents: [AdduserComponent, UserfilterComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class LayoutModule { }

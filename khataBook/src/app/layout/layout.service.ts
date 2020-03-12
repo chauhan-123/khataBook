@@ -49,6 +49,11 @@ export class LayoutService {
     return this.http.post(`${this.url}user_panel/getuniqueUserMoneyDetail`, info)
   }
 
+  // this function is used for get the filter data 
+  filterFormData(info) {
+    return this.http.post(`${this.url}user_panel/getUserFilter`, info)
+  }
+
   // this function handle the HttpResponse Errors from admin panel 
   handleError = (error: HttpErrorResponse) => {
     let message = error['error'].message;

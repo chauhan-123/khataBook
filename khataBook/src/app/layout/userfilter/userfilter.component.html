@@ -1,0 +1,36 @@
+<div class="filter-btn ">
+  <button mat-mini-fab matTooltip="Filter" (click)="openFilter()">
+    <mat-icon>filter_list</mat-icon>
+  </button>
+
+</div>
+<div class="filter" *ngIf="showFilter">
+  <form [formGroup]="filterForm" (ngSubmit)="onSubmit()">
+    <div>
+      <button type="button" style="float: right;" aria-label="Clear" (click)="crossFilter()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="date-btn">
+      <mat-form-field>
+        <mat-label>From</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="from" name="from" [(ngModel)]="filterForm.from">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>To</mat-label>
+        <input matInput [matDatepicker]="picker1" formControlName="to" name="to" [(ngModel)]="filterForm.to">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+      <div class="form-row-last" class="reset-btn">
+        <button mat-raised-button color="accent" type="submit">apply </button>
+        <button mat-raised-button color="primary" style="margin: 5px;" (click)="resetFilter()">Reset </button>
+      </div>
+
+    </div>
+  </form>
+</div>

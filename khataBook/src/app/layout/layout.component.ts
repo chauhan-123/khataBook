@@ -6,6 +6,7 @@ import { Pagination } from '../model/pagination';
 import { POPUP_MESSAGES } from 'src/app/constant/message';
 import { UtilityService } from '../shared/service/utility.service';
 import { Router } from '@angular/router';
+import { UserfilterComponent } from './userfilter/userfilter.component';
 
 
 @Component({
@@ -28,12 +29,18 @@ export class LayoutComponent extends Pagination implements OnInit {
   }
 
   // this function is used for get all user details
-  getUserDetails() {
-    var data = { ...this.validPageOptions }
-    this.layoutService.getUserDetails(data).subscribe(response => {
-      this.userDetails = response['result'];
-      this.total = response['total'];
-    })
+  getUserDetails(search?) {
+    let check = typeof (search)
+    console.log(typeof (search))
+    if (search != undefined && search != String) {
+      this.userDetails = search['result']
+    } else {
+      var data = { ...this.validPageOptions, search: search }
+      this.layoutService.getUserDetails(data).subscribe(response => {
+        this.userDetails = response['result'];
+        this.total = response['total'];
+      })
+    }
   }
 
   // this function is used for add user from frontend
@@ -46,6 +53,16 @@ export class LayoutComponent extends Pagination implements OnInit {
       this.getUserDetails();
     });
   }
+
+  // this function is used for open the filter component
+  // openFilter(): void {
+  //   const dialogRef = this.dialog.open(UserfilterComponent, {
+
+  //   })
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     // this.getUserDetails();
+  //   });
+  // }
 
   // change the serial number
   getSerialNumber(i) {
@@ -80,11 +97,7 @@ export class LayoutComponent extends Pagination implements OnInit {
 
   // this function is used for search tha data for searching
   searchResult() {
-
-    console.log('here', event.target)
-    // let data = this.bookForm.value;
-    // this.bookForm.setValue(data);
-    // this.getBookListDetail(this.bookForm.value);
+    this.getUserDetails(this.search);
   }
   // this function is used for reset the filter
   resetSearch() {
