@@ -32,7 +32,7 @@ export class LayoutComponent extends Pagination implements OnInit {
   getUserDetails(search?) {
     let check = typeof (search)
     console.log(typeof (search))
-    if (search != undefined && search != String) {
+    if (search == Object) {
       this.userDetails = search['result']
     } else {
       var data = { ...this.validPageOptions, search: search }
