@@ -223,15 +223,22 @@ const user = {
         let From = req.body.from;
         let To = req.body.to;
         let promises = [
-            findFilter(From, To)
+            findFilter(From, To),
+            AddUserGroup.find().countDocuments()
         ]
         Promise.all(promises).then(data => {
             res.status(200).json({
                 statusCode: 200,
                 message: 'filter data get successfully',
                 result: data[0],
+                total: data[1]
+
             })
         })
+    },
+
+    sendPdfFileDetails: (req, res) => {
+        console.log("working or not")
     }
 
 

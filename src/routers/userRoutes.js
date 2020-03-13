@@ -7,6 +7,7 @@ router.post('/getUserDetails', auth, userCtrl.getUserDetails);
 router.post('/addMoney', auth, userCtrl.getMoneyData);
 router.post('/sellProductDetails', auth, userCtrl.getSellProductDetails);
 router.post('/getuniqueUserMoneyDetail', auth, userCtrl.getUniqueSellProduct);
-router.post('/getUserFilter', auth, userCtrl.getUserFilterDetails)
+router.post('/getUserFilter', auth, userCtrl.getUserFilterDetails);
+router.post('/sendPdfFile' , auth , userCtrl.sendPdfFileDetails)
 
 module.exports = router;

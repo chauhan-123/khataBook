@@ -30,16 +30,21 @@ export class LayoutComponent extends Pagination implements OnInit {
 
   // this function is used for get all user details
   getUserDetails(search?) {
-    let check = typeof (search)
-    console.log(typeof (search))
-    if (search == Object) {
-      this.userDetails = search['result']
-    } else {
+    if (search == undefined) {
       var data = { ...this.validPageOptions, search: search }
       this.layoutService.getUserDetails(data).subscribe(response => {
         this.userDetails = response['result'];
         this.total = response['total'];
       })
+    } else if (typeof (search) == "string") {
+      data = { ...this.validPageOptions, search: search }
+      this.layoutService.getUserDetails(data).subscribe(response => {
+        this.userDetails = response['result'];
+        this.total = response['total'];
+      })
+    } else {
+      this.userDetails = search['result'];
+
     }
   }
 
@@ -54,15 +59,7 @@ export class LayoutComponent extends Pagination implements OnInit {
     });
   }
 
-  // this function is used for open the filter component
-  // openFilter(): void {
-  //   const dialogRef = this.dialog.open(UserfilterComponent, {
 
-  //   })
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     // this.getUserDetails();
-  //   });
-  // }
 
   // change the serial number
   getSerialNumber(i) {

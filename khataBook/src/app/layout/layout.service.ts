@@ -54,6 +54,15 @@ export class LayoutService {
     return this.http.post(`${this.url}user_panel/getUserFilter`, info)
   }
 
+  // this function is used for send the pdf file to all users
+  sendPdfFile(info) {
+    let data = {
+      info: info.result[0]['email']
+    }
+    console.log(info.result[0]['email'])
+    return this.http.post(`${this.url}user_panel/sendPdfFile`, data);
+  }
+
   // this function handle the HttpResponse Errors from admin panel 
   handleError = (error: HttpErrorResponse) => {
     let message = error['error'].message;

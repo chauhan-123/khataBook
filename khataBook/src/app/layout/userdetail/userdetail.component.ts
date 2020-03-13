@@ -25,6 +25,7 @@ export class UserdetailComponent extends Pagination implements OnInit {
   submitted = false;
   data: String;
   unavailability: any;
+  Response: any;
 
   constructor(private fb: FormBuilder, private layoutService: LayoutService,
     private utilityService: UtilityService, private router: Router) {
@@ -49,7 +50,7 @@ export class UserdetailComponent extends Pagination implements OnInit {
     let data = { ...this.validPageOptions }
     data['email'] = this.data['email']
     this.layoutService.getIndividualDetails(data).subscribe(response => {
-      console.log(response)
+      this.Response = response
       this.userDetails = response['result'];
       this.total = response['total'];
     })
@@ -75,6 +76,14 @@ export class UserdetailComponent extends Pagination implements OnInit {
     this.showViewTable = false;
     this.getUniqueDetails();
   }
+
+  // this function is used for send the pdf file
+  generatePdfFile() {
+    this.layoutService.sendPdfFile(this.Response).subscribe(response => {
+      console.log(response)
+    })
+  }
+
 
   /*
 Method For Changing The Pagination
