@@ -47,8 +47,17 @@ export class RegistrationService {
 
   // This function is used for send the data from admin to backend In Reset password page
   reset(info) {
-    console.log("info", info);
+
     return this.http.post(`${this.url}admin_panel/reset_password`, info)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  // this function is used for send the data which get from facebook api
+  facebookLogin(info) {
+    console.log("info", info);
+    return this.http.post(`${this.url}admin_panel/loginWithFacebook`, info)
       .pipe(
         catchError(this.handleError)
       );

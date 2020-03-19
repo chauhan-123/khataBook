@@ -271,6 +271,20 @@ const admin = {
         }
 
 
+    },
+
+    getFacebookData: (req, res) => {
+        console.log(req.body);
+        if (req.body.status == 'connected') {
+            var token = jwt.sign({}, config.secret, {
+                expiresIn: 86400 // expires in 24 hours
+            });
+            res.status(200).json({
+                statusCode: 200,
+                message: 'successfully logged in',
+                token: token
+            });
+        }
     }
 }
 

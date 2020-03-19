@@ -10,7 +10,9 @@ import { UtilityService } from './shared/service/utility.service';
 export class AppComponent {
   title = 'khatabook';
   loader = false;
-  constructor(public _router: Router, public UtilityService: UtilityService) { }
+  constructor(public _router: Router, public UtilityService: UtilityService) {
+
+  }
 
   ngOnInit() {
     this._router.events.forEach((event) => {

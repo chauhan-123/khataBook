@@ -136,12 +136,12 @@
 </form>
 
 <!-- generate pdf file  -->
-<button mat-raised-button color="primary" (click)="generatePdfFile()">send pdf file</button>
+<button mat-raised-button color="primary" (click)="generate()">send pdf file</button>
 
 <!-- view details table -->
 <button type="margin:3px" mat-raised-button color="accent" (click)="viewDetailPage()">View Details</button>
 <div class="mat-elevation-z8" *ngIf="!showViewTable" style="margin: 14px;">
-  <table mat-table [dataSource]="userDetails" class="mat-elevation-z8 set-layout">
+  <table id="basic-table" mat-table [dataSource]="userDetails" class="mat-elevation-z8 set-layout">
 
     <!-- Position Column -->
     <ng-container matColumnDef="position">

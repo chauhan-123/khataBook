@@ -1,9 +1,15 @@
 <div class="page-content">
+
   <div class="form-v8-content">
     <div class="form-left">
       <img src="assets/images/download.jpeg" style="height:610px;" alt="form">
     </div>
     <div class="form-right">
+      <div style="width: 31%;">
+        <button (click)="login()" class="btn btn-lg btn-primary btn-block">
+          Login with facebook
+        </button>
+      </div>
       <div class="tab">
         <div class="tab-inner">
           <button class="tablinks" (click)="signin()">Sign In</button>
@@ -12,6 +18,7 @@
           <button class="tablinks" (click)="signup()">Sign Up</button>
         </div>
       </div>
+
 
       <!-- Registration form -->
 
@@ -148,3 +155,4 @@
       </form>
     </div>
   </div>
+</div>

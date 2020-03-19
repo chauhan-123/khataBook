@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RegistrationService } from './registration.service';
 import { UtilityService } from '../../shared/service/utility.service';
 import { Router } from '@angular/router';
+import { LoginResponse, FacebookService } from 'ngx-facebook';
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -16,7 +17,12 @@ export class RegistrationComponent implements OnInit {
   submitted = false;
 
   constructor(private fb: FormBuilder, public registrationService: RegistrationService,
-    private utility: UtilityService, private router: Router) { }
+    private utility: UtilityService, private router: Router, private FB: FacebookService) {
+    FB.init({
+      appId: '211096033570955',
+      version: 'v2.9'
+    });
+  }
 
   ngOnInit() {
     this.signUpForm = this.fb.group({
@@ -58,7 +64,6 @@ export class RegistrationComponent implements OnInit {
       return;
     }
     this.registrationService.signIn(this.signInForm.value).subscribe((response: any) => {
-      console.log(response)
       if (response['statusCode'] === 200) {
         localStorage.setItem('login', response.token);
         localStorage.setItem('mobile', response['result'].mobileNumber);
@@ -69,6 +74,29 @@ export class RegistrationComponent implements OnInit {
       }
     })
   }
+
+  // Login with facebook function and get the response
+  login() {
+    this.FB.login()
+      .then((res: LoginResponse) => {
+        let data = {
+          status: res.status,
+          accessToken: res.authResponse.accessToken,
+          userId: res.authResponse.userID
+        }
+        this.registrationService.facebookLogin(data).subscribe((response: any) => {
+          console.log(response);
+          if (response['statusCode'] === 200) {
+            localStorage.setItem('login', response.token);
+            this.utility.openSnackBar('you are successfully signin', true);
+            UtilityService.loader.next(false);
+            this.router.navigate(['../home']);
+          }
+        })
+      })
+  }
+
+
 
   // tag swittching between signup and signin
   signup() {

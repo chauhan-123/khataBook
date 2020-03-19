@@ -13,6 +13,7 @@ import { HttpService } from './shared/service/http.service';
 import { SharedModule } from './shared/shared.module';
 import { LayoutService } from './layout/layout.service';
 import { LayoutModule } from '../app/layout/layout.module';
+import { FacebookService, FacebookModule } from 'ngx-facebook';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,9 +27,10 @@ import { LayoutModule } from '../app/layout/layout.module';
     MatSnackBarModule,
     SharedModule,
     LayoutModule,
+    FacebookModule.forRoot()
 
   ],
-  providers: [RegistrationService, UtilityService, HttpService, LayoutService],
+  providers: [RegistrationService, UtilityService, HttpService, LayoutService, FacebookService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
