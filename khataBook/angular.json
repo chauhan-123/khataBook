@@ -128,5 +128,8 @@
       }
     }
   },
-  "defaultProject": "khatabook"
+  "defaultProject": "khatabook",
+  "cli": {
+    "analytics": "77e67e7d-3a2c-4a96-9dcb-5afa47c6113b"
+  }
 }

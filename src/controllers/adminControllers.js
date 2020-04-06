@@ -1,5 +1,6 @@
 const adminModel = require('../models/adminModels');
 const adminGroup = adminModel.adminPanel;
+const faceBookPanel = adminModel.faceBookPanel;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../model/config');
@@ -104,7 +105,6 @@ const admin = {
                             message: ' your password is not match with registered password ....'
                         });
                     }
-                    console.log(user, user[0])
                     var token = jwt.sign({
                         id: user._id,
                         email: user.email,
@@ -274,18 +274,25 @@ const admin = {
     },
 
     getFacebookData: (req, res) => {
-        console.log(req.body);
         if (req.body.status == 'connected') {
+            var data = {
+                accessToken: req.body.accessToken,
+                userId: req.body.userId
+            }
+            var myData = new faceBookPanel(data);
             var token = jwt.sign({}, config.secret, {
                 expiresIn: 86400 // expires in 24 hours
             });
-            res.status(200).json({
-                statusCode: 200,
-                message: 'successfully logged in',
-                token: token
-            });
+            myData.save().then(item => {
+                res.status(200).json({
+                    statusCode: 200,
+                    message: 'successfully logged in',
+                    token: token
+                })
+            })
         }
     }
 }
+
 
 module.exports = admin;

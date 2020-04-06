@@ -7,8 +7,8 @@ import { validateHorizontalPosition } from '@angular/cdk/overlay';
 import { UtilityService } from '../../shared/service/utility.service';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { Pagination } from '../../model/pagination';
-import jsPDF from 'jspdf'
-import 'jspdf-autotable'
+// import jsPDF from 'jspdf'
+// import 'jspdf-autotable'
 import { Time } from '@angular/common';
 
 @Component({
@@ -83,44 +83,44 @@ export class UserdetailComponent extends Pagination implements OnInit {
   }
 
   // this function is used for send the pdf file
-  async generate() {
-    var doc = new jsPDF('p', 'pt');
-    // var res = doc.autoTableHtmlToJson(document.getElementById("basic-table"));
-    doc.autoTable({ margin: { top: 80 } });
-    var array = [];
-    await this.userTable.forEach(element => {
-      let temArray = [];
-      temArray.push(element.currentDate);
-      temArray.push(element.promiseDate);
-      temArray.push(element.amount);
-      temArray.push(element.giveMoney);
-      temArray.push(element.balance);
-      array.push(temArray);
-    });
-    console.log("array ", array);
-    doc.autoTable({
-      head: [["currentDate", "promiseDate", "amount", "giveMoney", "balance"]],
-      body: array,
-      // for header and footer we added didDrawPage below
-      didDrawPage: function (data) {
-        doc.setFontSize(18);
-        doc.setTextColor(40);
-        doc.setFontStyle("normal");
-        // doc.addImage(headerImgData, 'JPEG', data.settings.margin.left, 20, 50, 50);
-        doc.text("Testing Report", data.settings.margin.left, 50);
-      },
-      didDrawCell: data => {
-        // if (data.section === 'body' && data.column.index === 0) {
-        var base64Img = 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fb%2Fb6%2FImage_created_with_a_mobile_phone.png&imgrefurl=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FImage&tbnid=nH5liarSz56duM&vet=12ahUKEwiltcnJ8KboAhWRy3MBHSzUCksQMygDegUIARCPAg..i&docid=0JWe7yDOKrVFAM&w=4000&h=3000&q=image&ved=2ahUKEwiltcnJ8KboAhWRy3MBHSzUCksQMygDegUIARCPAg'
-        var image = 'data:image/jpeg;base64,btoa(base64Img)'
-        console.log(image)
-        return
-        doc.addImage(image, 'JPEG', data.cell.x + 2, data.cell.y + 2, 10, 10)
-        // }
-      },
-    });
-    doc.save("table.pdf");
-  }
+  // async generate() {
+  //   var doc = new jsPDF('p', 'pt');
+  //   // var res = doc.autoTableHtmlToJson(document.getElementById("basic-table"));
+  //   doc.autoTable({ margin: { top: 80 } });
+  //   var array = [];
+  //   await this.userTable.forEach(element => {
+  //     let temArray = [];
+  //     temArray.push(element.currentDate);
+  //     temArray.push(element.promiseDate);
+  //     temArray.push(element.amount);
+  //     temArray.push(element.giveMoney);
+  //     temArray.push(element.balance);
+  //     array.push(temArray);
+  //   });
+  //   console.log("array ", array);
+  //   doc.autoTable({
+  //     head: [["currentDate", "promiseDate", "amount", "giveMoney", "balance"]],
+  //     body: array,
+  //     // for header and footer we added didDrawPage below
+  //     didDrawPage: function (data) {
+  //       doc.setFontSize(18);
+  //       doc.setTextColor(40);
+  //       doc.setFontStyle("normal");
+  //       // doc.addImage(headerImgData, 'JPEG', data.settings.margin.left, 20, 50, 50);
+  //       doc.text("Testing Report", data.settings.margin.left, 50);
+  //     },
+  //     didDrawCell: data => {
+  //       // if (data.section === 'body' && data.column.index === 0) {
+  //       var base64Img = 'https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fb%2Fb6%2FImage_created_with_a_mobile_phone.png&imgrefurl=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FImage&tbnid=nH5liarSz56duM&vet=12ahUKEwiltcnJ8KboAhWRy3MBHSzUCksQMygDegUIARCPAg..i&docid=0JWe7yDOKrVFAM&w=4000&h=3000&q=image&ved=2ahUKEwiltcnJ8KboAhWRy3MBHSzUCksQMygDegUIARCPAg'
+  //       var image = 'data:image/jpeg;base64,btoa(base64Img)'
+  //       console.log(image)
+  //       return
+  //       doc.addImage(image, 'JPEG', data.cell.x + 2, data.cell.y + 2, 10, 10)
+  //       // }
+  //     },
+  //   });
+  //   doc.save("table.pdf");
+  // }
 
 
   /*

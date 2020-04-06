@@ -41,7 +41,20 @@ var adminPanelSchema = new mongoose.Schema({
     },
 })
 
-var adminPanel = mongoose.model("adminPanel", adminPanelSchema)
+var faceBookSchema = new mongoose.Schema({
+    // acessToken:{
+    //     type:String,
+    //     required:true
+    // },
+    userId:{
+        type:String,
+        required:true
+    } 
+})
+
+var adminPanel = mongoose.model("adminPanel", adminPanelSchema);
+var faceBookPanel = mongoose.model("faceBookPanel" , faceBookSchema)
 
 
 module.exports.adminPanel = adminPanel;
+module.exports.faceBookPanel = faceBookPanel;

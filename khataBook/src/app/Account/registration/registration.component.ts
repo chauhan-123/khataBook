@@ -85,7 +85,7 @@ export class RegistrationComponent implements OnInit {
           userId: res.authResponse.userID
         }
         this.registrationService.facebookLogin(data).subscribe((response: any) => {
-          console.log(response);
+          console.log(response , "facebook login");
           if (response['statusCode'] === 200) {
             localStorage.setItem('login', response.token);
             this.utility.openSnackBar('you are successfully signin', true);
